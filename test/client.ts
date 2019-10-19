@@ -8,7 +8,7 @@ async function boot() {
 	setInterval(async () => {
 		const data = JSON.stringify({ eae: `MOTA-${i}` })
 		await Shugart.set(`mota`, data)
-		console.log(await Shugart.get(`mota1`))
+		console.log(await Shugart.get(`mota`))
 		i++
 	}, 500)
 }
