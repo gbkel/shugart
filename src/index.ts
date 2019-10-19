@@ -38,11 +38,11 @@ class Shugart {
 							data.key,
 							data.data
 						)
-						ws.send(result ? "true" : "false")
+						ws.send(result)
 					}
 					if (data.method === "get") {
-						const value = await StorageService.get(this.storage, data.key)
-						ws.send(value)
+						const result = await StorageService.get(this.storage, data.key)
+						ws.send(result)
 					}
 				}
 			})
@@ -62,7 +62,11 @@ class Shugart {
 		this.websocketClient.send(payload)
 		return new Promise(resolve => {
 			this.websocketClient.on("message", (result: string) => {
-				resolve(result)
+				if (+result === 0) {
+					resolve(null)
+				} else {
+					resolve(JSON.parse(result))
+				}
 			})
 		})
 	}
@@ -71,8 +75,8 @@ class Shugart {
 		const payload = JSON.stringify({ method: "set", key, data })
 		this.websocketClient.send(payload)
 		return new Promise(resolve => {
-			this.websocketClient.on("message", (data: string) => {
-				resolve(data)
+			this.websocketClient.on("message", (result: string) => {
+				resolve(+result)
 			})
 		})
 	}
@@ -85,6 +89,6 @@ class Shugart {
 	}
 }
 
+export default new Shugart()
 module.exports = new Shugart()
 module.exports.default = new Shugart()
-export default new Shugart()
