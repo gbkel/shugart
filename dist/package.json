@@ -1,0 +1,38 @@
+{
+    "name": "shugart",
+    "version": "1.0.1",
+    "description": "A persistent data store fast as Redis and free as the air you breathe",
+    "main": "src/index.ts",
+    "dependencies": {
+        "@types/node": "^12.11.1",
+        "@types/ws": "^6.0.3",
+        "dotenv": "^8.2.0",
+        "level": "^6.0.0",
+        "nodemon": "^1.19.4",
+        "ts-node": "^8.4.1",
+        "typescript": "^3.6.4",
+        "vpdate": "^0.1.1",
+        "ws": "^7.2.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "nodemon --watch test test/index.ts",
+        "dev": "nodemon --watch src src/index.ts",
+        "build": "tsc",
+        "deploy": "git pull && vpdate && git push && npm publish --access public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gbkel/shugart.git"
+    },
+    "keywords": [
+        "database",
+        "fast"
+    ],
+    "author": "“Guilherme Bromonschenkel <guilhermebromonschenkel@gmail.com”> (https://www.guilherr.me)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/gbkel/shugart/issues"
+    },
+    "homepage": "https://github.com/gbkel/shugart#readme"
+}
