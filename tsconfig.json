@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"target": "es6",
+		"module": "commonjs",
+		"rootDir": ".",
+		"outDir": "dist",
+		"allowJs": true,
+		"sourceMap": true,
+		"baseUrl": "."
+	},
+	"include": ["./**/*.ts", "index.d.ts"],
+	"exclude": ["node_modules", ".vscode"]
+}
