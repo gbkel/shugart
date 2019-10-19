@@ -2,7 +2,7 @@
   "name": "shugart",
   "version": "1.0.2",
   "description": "A persistent data store fast as Redis and free as the air you breathe",
-  "main": "src/index.ts",
+  "main": "index.js",
   "dependencies": {
     "@types/node": "^12.11.1",
     "@types/ws": "^6.0.3",

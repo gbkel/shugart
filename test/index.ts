@@ -1,4 +1,4 @@
-import Shugart from "../src/Shugart"
+import Shugart from "../src"
 
 async function boot() {
 	await Shugart.client("http://localhost:8888")
