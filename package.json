@@ -1,6 +1,6 @@
 {
   "name": "shugart",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A persistent data store fast as Redis and free as the air you breathe",
   "main": "index.js",
   "dependencies": {
