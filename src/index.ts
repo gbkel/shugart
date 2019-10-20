@@ -12,10 +12,8 @@ import wsConfig from "../config/websocket"
 class Shugart {
 	websocketServer: any = null
 	websocketClient: any = null
-	_host: any = null
-	queue: [] = []
-	clientStatus: boolean = false
 	storage: Level = null
+	_host: any = null
 
 	async start() {
 		this.setupWebSocketServer()
