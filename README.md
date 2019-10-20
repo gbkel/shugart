@@ -20,7 +20,7 @@ $ npm install shugart
 
 ### Server
 
-Before setting up a client, you'll have to start a server. In order to do that, you can use Heroku or another service with **npm commands** support.
+Before setting up a client, you'll have to start a server. In order to do that, you can use **Heroku** or another service with **npm commands** support.
 
 So you need to do the following:
 
@@ -54,7 +54,7 @@ Shugart.start()
 
 ### Client
 
-Now that you successfully set up the server, you're able to use the client on any app you want. Below you can see the commands you can do in order to reach some functions of **shugart**.
+Now that you successfully set up the server, you're able to use the client on any app you want. Below you can see the commands of **shugart**.
 
 #### shugart.client(host)
 
