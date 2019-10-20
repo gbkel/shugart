@@ -17,6 +17,14 @@ A persistent data store fast as Redis and free as the air you breathe
 $ npm install shugart
 ```
 
+## Local Testing
+
+By default, the localhost for the socket of **shugart** is `http://localhost:8080`, but you can change it by creating a **.env** file on the root of your project and setting up the port you want as below:
+
+```sh
+PORT=3666
+```
+
 ## Getting started
 
 ### Server
@@ -81,4 +89,12 @@ await Shugart.set(key, data)
 // Retrieving data
 const key = "shugart-01"
 const data = await Shugart.get(key)
+```
+
+#### shugart.delete(key)
+
+```js
+// Deleting data
+const key = "shugart-01"
+const data = await Shugart.delete(key)
 ```
