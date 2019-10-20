@@ -1,6 +1,7 @@
 # shugart
 
 [![npm version](https://img.shields.io/npm/v/shugart.svg?style=flat-square)](https://www.npmjs.org/package/shugart)
+[![npm downloads](https://img.shields.io/npm/dm/shugart.svg?style=flat-square)](http://npm-stat.com/charts.html?package=shugart)
 [![Build Status](https://travis-ci.com/gbkel/shugart.svg?branch=master)](https://travis-ci.com/gbkel/shugart)
 
 A persistent data store fast as Redis and free as the air you breathe
