@@ -2,27 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class StorageService {
     set(storage, key, data) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             storage.put(key, JSON.stringify(data), (error) => {
                 if (error) {
-                    console.error(error);
-                    reject(false);
+                    resolve(0);
                 }
                 else {
-                    resolve(true);
+                    resolve(1);
                 }
             });
         });
     }
     get(storage, key) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             storage.get(key, (error, value) => {
                 if (error) {
-                    console.error(error);
-                    reject(null);
-                }
-                else if (!value) {
-                    resolve(null);
+                    resolve(0);
                 }
                 else {
                     resolve(value);

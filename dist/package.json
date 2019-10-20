@@ -1,8 +1,8 @@
 {
     "name": "shugart",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "description": "A persistent data store fast as Redis and free as the air you breathe",
-    "main": "src/index.ts",
+    "main": "index.js",
     "dependencies": {
         "@types/node": "^12.11.1",
         "@types/ws": "^6.0.3",
@@ -16,8 +16,8 @@
     },
     "devDependencies": {},
     "scripts": {
-        "test": "nodemon --watch test test/index.ts",
-        "dev": "nodemon --watch src src/index.ts",
+        "test": "nodemon --watch test test/client.ts",
+        "dev": "nodemon --watch test test/server.ts",
         "build": "tsc",
         "deploy": "git pull && vpdate && git push && npm publish --access public"
     },

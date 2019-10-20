@@ -30,11 +30,11 @@ class Shugart {
                     if (isPayloadMethodCorrect) {
                         if (data.method === "set") {
                             const result = yield Storage_1.default.set(this.storage, data.key, data.data);
-                            ws.send(result ? "true" : "false");
+                            ws.send(result);
                         }
                         if (data.method === "get") {
-                            const value = yield Storage_1.default.get(this.storage, data.key);
-                            ws.send(value);
+                            const result = yield Storage_1.default.get(this.storage, data.key);
+                            ws.send(result);
                         }
                     }
                 }));
@@ -67,7 +67,12 @@ class Shugart {
             this.websocketClient.send(payload);
             return new Promise(resolve => {
                 this.websocketClient.on("message", (result) => {
-                    resolve(result);
+                    if (+result === 0) {
+                        resolve(null);
+                    }
+                    else {
+                        resolve(JSON.parse(result));
+                    }
                 });
             });
         });
@@ -77,14 +82,14 @@ class Shugart {
             const payload = JSON.stringify({ method: "set", key, data });
             this.websocketClient.send(payload);
             return new Promise(resolve => {
-                this.websocketClient.on("message", (data) => {
-                    resolve(data);
+                this.websocketClient.on("message", (result) => {
+                    resolve(+result);
                 });
             });
         });
     }
 }
+exports.default = new Shugart();
 module.exports = new Shugart();
 module.exports.default = new Shugart();
-exports.default = new Shugart();
 //# sourceMappingURL=index.js.map
