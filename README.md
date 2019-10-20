@@ -61,13 +61,14 @@ Now that you successfully set up the server, you're able to use the client on an
 ```js
 // Connecting the client
 const host = "https://shugart.herokuapp.com"
-await Shugart.client(host)
+await Shugart.connect(host)
+console.log(Shugart.host) // If successfully connected, shows the host
 ```
 
 #### shugart.set(key, data)
 
 ```js
-// Saving a data
+// Saving data
 const key = "shugart-01"
 const data = JSON.stringify({ test: "A simple test" })
 await Shugart.set(key, data)
@@ -76,7 +77,7 @@ await Shugart.set(key, data)
 #### shugart.get(key)
 
 ```js
-// Retrieving a data
+// Retrieving data
 const key = "shugart-01"
 const data = await Shugart.get(key)
 ```

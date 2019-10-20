@@ -1,8 +1,8 @@
 import Shugart from "../src"
 
 async function boot() {
-	await Shugart.client("http://localhost:8081")
-
+	await Shugart.connect("http://localhost:8081")
+	console.log(Shugart.host)
 	let i = 0
 
 	setInterval(async () => {

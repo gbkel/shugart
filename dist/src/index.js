@@ -20,6 +20,7 @@ class Shugart {
     constructor() {
         this.websocketServer = null;
         this.websocketClient = null;
+        this._host = null;
         this.storage = null;
         this.initShugartService = () => {
             this.storage = Level("shugart");
@@ -42,7 +43,10 @@ class Shugart {
         };
         this.setupWebSocketClient = (host) => {
             this.websocketClient = new WebSocket(host);
-            return new Promise(resolve => this.websocketClient.on("open", () => resolve()));
+            return new Promise(resolve => this.websocketClient.on("open", () => {
+                this._host = host;
+                resolve();
+            }));
         };
     }
     start() {
@@ -56,7 +60,7 @@ class Shugart {
     setupWebSocketServer() {
         this.websocketServer = new WebSocket.Server(websocket_1.default);
     }
-    client(host) {
+    connect(host) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.setupWebSocketClient(host);
         });
@@ -83,10 +87,18 @@ class Shugart {
             this.websocketClient.send(payload);
             return new Promise(resolve => {
                 this.websocketClient.on("message", (result) => {
-                    resolve(+result);
+                    if (+result === 0) {
+                        resolve(false);
+                    }
+                    else {
+                        resolve(true);
+                    }
                 });
             });
         });
+    }
+    get host() {
+        return this._host;
     }
 }
 exports.default = new Shugart();

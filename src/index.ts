@@ -13,6 +13,7 @@ import wsConfig from "../config/websocket"
 class Shugart {
 	websocketServer: any = null
 	websocketClient: any = null
+	_host: any = null
 	storage: Level = null
 
 	async start() {
@@ -53,13 +54,15 @@ class Shugart {
 		this.websocketServer = new WebSocket.Server(wsConfig)
 	}
 
-	async client(host: string) {
+	async connect(host: string) {
 		await this.setupWebSocketClient(host)
 	}
 
 	async get(key: string) {
 		const payload = JSON.stringify({ method: "get", key })
+
 		this.websocketClient.send(payload)
+
 		return new Promise(resolve => {
 			this.websocketClient.on("message", (result: string) => {
 				if (+result === 0) {
@@ -73,19 +76,33 @@ class Shugart {
 
 	async set(key: string, data: string) {
 		const payload = JSON.stringify({ method: "set", key, data })
+
 		this.websocketClient.send(payload)
+
 		return new Promise(resolve => {
 			this.websocketClient.on("message", (result: string) => {
-				resolve(+result)
+				if (+result === 0) {
+					resolve(false)
+				} else {
+					resolve(true)
+				}
 			})
 		})
 	}
 
 	setupWebSocketClient = (host: string) => {
 		this.websocketClient = new WebSocket(host)
+
 		return new Promise(resolve =>
-			this.websocketClient.on("open", () => resolve())
+			this.websocketClient.on("open", () => {
+				this._host = host
+				resolve()
+			})
 		)
+	}
+
+	get host() {
+		return this._host
 	}
 }
 
