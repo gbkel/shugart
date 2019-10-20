@@ -71,7 +71,7 @@ console.log(Shugart.host) // If successfully connected, shows the host
 ```js
 // Saving data
 const key = "shugart-01"
-const data = JSON.stringify({ test: "A simple test" })
+const data = { test: "A simple test" }
 await Shugart.set(key, data)
 ```
 

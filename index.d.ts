@@ -4,7 +4,7 @@ export interface ShugartInterface {
 	start: () => any
 	client(host: string): Promise<void>
 	get(key: string): Promise<string>
-	set(key: string, data: string): Promise<string>
+	set(key: string, data: object): Promise<string>
 	host: string
 }
 

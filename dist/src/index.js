@@ -13,7 +13,6 @@ const WebSocket = require("ws");
 const Level = require("level");
 const package_json_1 = require("../package.json");
 require("dotenv/config");
-const Validation_1 = require("./Services/Validation");
 const Storage_1 = require("./Services/Storage");
 const websocket_1 = require("../config/websocket");
 class Shugart {
@@ -21,22 +20,21 @@ class Shugart {
         this.websocketServer = null;
         this.websocketClient = null;
         this._host = null;
+        this.queue = [];
+        this.clientStatus = false;
         this.storage = null;
         this.initShugartService = () => {
             this.storage = Level("shugart");
             this.websocketServer.on("connection", (ws) => {
-                ws.on("message", (payload) => __awaiter(this, void 0, void 0, function* () {
-                    const data = JSON.parse(payload);
-                    const isPayloadMethodCorrect = Validation_1.default.validatePayloadMethod(data);
-                    if (isPayloadMethodCorrect) {
-                        if (data.method === "set") {
-                            const result = yield Storage_1.default.set(this.storage, data.key, data.data);
-                            ws.send(result);
-                        }
-                        if (data.method === "get") {
-                            const result = yield Storage_1.default.get(this.storage, data.key);
-                            ws.send(result);
-                        }
+                ws.on("message", (data) => __awaiter(this, void 0, void 0, function* () {
+                    const payload = JSON.parse(data);
+                    if (payload.method === "set") {
+                        const result = yield Storage_1.default.set(this.storage, payload.key, payload.data);
+                        ws.send(result);
+                    }
+                    if (payload.method === "get") {
+                        const result = yield Storage_1.default.get(this.storage, payload.key);
+                        ws.send(result);
                     }
                 }));
             });
@@ -75,7 +73,7 @@ class Shugart {
                         resolve(null);
                     }
                     else {
-                        resolve(JSON.parse(result));
+                        resolve(result);
                     }
                 });
             });

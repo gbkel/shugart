@@ -1,20 +1,21 @@
 {
     "name": "shugart",
-    "version": "1.0.9",
+    "version": "0.0.16",
     "description": "A persistent data store fast as Redis and free as the air you breathe",
     "main": "index.js",
     "dependencies": {
-        "@types/node": "^12.11.1",
-        "@types/ws": "^6.0.3",
         "dotenv": "^8.2.0",
         "level": "^6.0.0",
-        "nodemon": "^1.19.4",
-        "ts-node": "^8.4.1",
-        "typescript": "^3.6.4",
-        "vpdate": "^0.1.1",
         "ws": "^7.2.0"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "vpdate": "^0.1.1",
+        "ts-node": "^8.4.1",
+        "nodemon": "^1.19.4",
+        "typescript": "^3.6.4",
+        "@types/ws": "^6.0.3",
+        "@types/node": "^12.11.1"
+    },
     "scripts": {
         "dev-client": "nodemon --watch test test/client.ts",
         "dev-server": "nodemon --watch test test/server.ts",
@@ -27,7 +28,9 @@
     },
     "keywords": [
         "database",
-        "fast"
+        "fast",
+        "leveldb",
+        "websocket"
     ],
     "author": "“Guilherme Bromonschenkel <guilhermebromonschenkel@gmail.com”> (https://www.guilherr.me)",
     "license": "MIT",
