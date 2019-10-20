@@ -20,14 +20,14 @@ $ npm install shugart
 
 ### Server
 
-Before setting up a client, you'll have to start a server. In order to do that, you can use Heroku or another service which can use **npm commands**.
+Before setting up a client, you'll have to start a server. In order to do that, you can use Heroku or another service with **npm commands** support.
 
 So you need to do the following:
 
 - Create a new repository
+- Open the repository folder on your computer
 - `npm init`
 - `npm install --save shugart`
-- Open the repository folder on your computer
 - Create a index.js on root with the following data:
 
 ```js
