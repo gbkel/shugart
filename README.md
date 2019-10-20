@@ -1,7 +1,7 @@
 # shugart
 
 [![npm version](https://img.shields.io/npm/v/shugart.svg?style=flat-square)](https://www.npmjs.org/package/shugart)
-[![install size](https://packaagephobia.now.sh/badge?p=shugart)](https://packagephobia.now.sh/result?p=shugart)
+[![install size](https://packagephobia.now.sh/badge?p=shugart)](https://packagephobia.now.sh/result?p=shugart)
 
 A persistent data store fast as Redis and free as the air you breathe
 
