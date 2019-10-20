@@ -16,8 +16,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "nodemon --watch test test/client.ts",
-    "dev": "nodemon --watch test test/server.ts",
+    "dev-client": "nodemon --watch test test/client.ts",
+    "dev-server": "nodemon --watch test test/server.ts",
     "build": "tsc",
     "deploy": "git pull && vpdate && git push && npm publish --access public"
   },
