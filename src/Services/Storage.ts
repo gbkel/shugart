@@ -24,6 +24,18 @@ class StorageService {
 			})
 		})
 	}
+
+	delete(storage: Level, key: string) {
+		return new Promise(resolve => {
+			storage.del(key, (error: any) => {
+				if (error) {
+					resolve(0)
+				} else {
+					resolve(1)
+				}
+			})
+		})
+	}
 }
 
 export default new StorageService()

@@ -25,6 +25,18 @@ class StorageService {
             });
         });
     }
+    delete(storage, key) {
+        return new Promise(resolve => {
+            storage.del(key, (error) => {
+                if (error) {
+                    resolve(0);
+                }
+                else {
+                    resolve(1);
+                }
+            });
+        });
+    }
 }
 exports.default = new StorageService();
 //# sourceMappingURL=Storage.js.map

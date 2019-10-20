@@ -3,17 +3,17 @@ import * as Level from "level"
 import { version } from "../package.json"
 import "dotenv/config"
 
-import StorageService from "./Services/Storage"
+import MessageHandler from "./Handlers/Message"
 
-import { Payload } from "./Interfaces/Payload"
+import PayloadUtils from "./Utils/Payload"
 
 import wsConfig from "../config/websocket"
 
 class Shugart {
-	websocketServer: any = null
-	websocketClient: any = null
+	webSocketServer: any = null
+	webSocketClient: any = null
 	storage: Level = null
-	_host: any = null
+	_host: string | null = null
 
 	async start() {
 		this.setupWebSocketServer()
@@ -22,76 +22,67 @@ class Shugart {
 		console.log(`=> Version: ${version}`)
 	}
 
+	async connect(host: string) {
+		await this.setupWebSocketClient(host)
+	}
+
 	initShugartService = () => {
 		this.storage = Level("shugart")
-		this.websocketServer.on("connection", (ws: WebSocket) => {
-			ws.on("message", async (data: string) => {
-				const payload: Payload = JSON.parse(data)
-
-				if (payload.method === "set") {
-					const result = await StorageService.set(
-						this.storage,
-						payload.key,
-						payload.data
-					)
-					ws.send(result)
-				}
-				if (payload.method === "get") {
-					const result = await StorageService.get(this.storage, payload.key)
-					ws.send(result)
-				}
-			})
+		this.webSocketServer.on("connection", (ws: WebSocket) => {
+			ws.on("message", (data: string) =>
+				MessageHandler.processPayload(data, this.storage, ws)
+			)
 		})
 	}
 
-	setupWebSocketServer() {
-		this.websocketServer = new WebSocket.Server(wsConfig)
+	setupWebSocketServer = () => {
+		this.webSocketServer = new WebSocket.Server(wsConfig)
 	}
 
 	setupWebSocketClient = (host: string) => {
-		this.websocketClient = new WebSocket(host)
+		this.webSocketClient = new WebSocket(host)
 
 		return new Promise(resolve =>
-			this.websocketClient.on("open", () => {
+			this.webSocketClient.on("open", () => {
 				this._host = host
 				resolve()
 			})
 		)
 	}
 
-	async connect(host: string) {
-		await this.setupWebSocketClient(host)
-	}
+	get(key: string) {
+		const payload = PayloadUtils.buildPayload("get", key)
 
-	async get(key: string) {
-		const payload = JSON.stringify({ method: "get", key })
-
-		this.websocketClient.send(payload)
+		this.webSocketClient.send(payload)
 
 		return new Promise(resolve => {
-			this.websocketClient.on("message", (result: string) => {
-				if (+result === 0) {
-					resolve(null)
-				} else {
-					resolve(result)
-				}
-			})
+			this.webSocketClient.on("message", (result: string) =>
+				MessageHandler.callbackGet(result, resolve)
+			)
 		})
 	}
 
-	async set(key: string, data: object) {
-		const payload = JSON.stringify({ method: "set", key, data })
+	set(key: string, data: object) {
+		const payload = PayloadUtils.buildPayload("set", key, data)
 
-		this.websocketClient.send(payload)
+		this.webSocketClient.send(payload)
 
 		return new Promise(resolve => {
-			this.websocketClient.on("message", (result: string) => {
-				if (+result === 0) {
-					resolve(false)
-				} else {
-					resolve(true)
-				}
-			})
+			this.webSocketClient.on("message", (result: string) =>
+				MessageHandler.callbackSet(result, resolve)
+			)
+		})
+	}
+
+	delete(key: string) {
+		const payload = PayloadUtils.buildPayload("delete", key)
+
+		this.webSocketClient.send(payload)
+
+		return new Promise(resolve => {
+			this.webSocketClient.on("message", (result: string) =>
+				MessageHandler.callbackDelete(result, resolve)
+			)
 		})
 	}
 

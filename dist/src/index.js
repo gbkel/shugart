@@ -13,35 +13,27 @@ const WebSocket = require("ws");
 const Level = require("level");
 const package_json_1 = require("../package.json");
 require("dotenv/config");
-const Storage_1 = require("./Services/Storage");
+const Message_1 = require("./Handlers/Message");
+const Payload_1 = require("./Utils/Payload");
 const websocket_1 = require("../config/websocket");
 class Shugart {
     constructor() {
-        this.websocketServer = null;
-        this.websocketClient = null;
-        this._host = null;
-        this.queue = [];
-        this.clientStatus = false;
+        this.webSocketServer = null;
+        this.webSocketClient = null;
         this.storage = null;
+        this._host = null;
         this.initShugartService = () => {
             this.storage = Level("shugart");
-            this.websocketServer.on("connection", (ws) => {
-                ws.on("message", (data) => __awaiter(this, void 0, void 0, function* () {
-                    const payload = JSON.parse(data);
-                    if (payload.method === "set") {
-                        const result = yield Storage_1.default.set(this.storage, payload.key, payload.data);
-                        ws.send(result);
-                    }
-                    if (payload.method === "get") {
-                        const result = yield Storage_1.default.get(this.storage, payload.key);
-                        ws.send(result);
-                    }
-                }));
+            this.webSocketServer.on("connection", (ws) => {
+                ws.on("message", (data) => Message_1.default.processPayload(data, this.storage, ws));
             });
         };
+        this.setupWebSocketServer = () => {
+            this.webSocketServer = new WebSocket.Server(websocket_1.default);
+        };
         this.setupWebSocketClient = (host) => {
-            this.websocketClient = new WebSocket(host);
-            return new Promise(resolve => this.websocketClient.on("open", () => {
+            this.webSocketClient = new WebSocket(host);
+            return new Promise(resolve => this.webSocketClient.on("open", () => {
                 this._host = host;
                 resolve();
             }));
@@ -55,44 +47,30 @@ class Shugart {
             console.log(`=> Version: ${package_json_1.version}`);
         });
     }
-    setupWebSocketServer() {
-        this.websocketServer = new WebSocket.Server(websocket_1.default);
-    }
     connect(host) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.setupWebSocketClient(host);
         });
     }
     get(key) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const payload = JSON.stringify({ method: "get", key });
-            this.websocketClient.send(payload);
-            return new Promise(resolve => {
-                this.websocketClient.on("message", (result) => {
-                    if (+result === 0) {
-                        resolve(null);
-                    }
-                    else {
-                        resolve(result);
-                    }
-                });
-            });
+        const payload = Payload_1.default.buildPayload("get", key);
+        this.webSocketClient.send(payload);
+        return new Promise(resolve => {
+            this.webSocketClient.on("message", (result) => Message_1.default.callbackGet(result, resolve));
         });
     }
     set(key, data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const payload = JSON.stringify({ method: "set", key, data });
-            this.websocketClient.send(payload);
-            return new Promise(resolve => {
-                this.websocketClient.on("message", (result) => {
-                    if (+result === 0) {
-                        resolve(false);
-                    }
-                    else {
-                        resolve(true);
-                    }
-                });
-            });
+        const payload = Payload_1.default.buildPayload("set", key, data);
+        this.webSocketClient.send(payload);
+        return new Promise(resolve => {
+            this.webSocketClient.on("message", (result) => Message_1.default.callbackSet(result, resolve));
+        });
+    }
+    delete(key) {
+        const payload = Payload_1.default.buildPayload("delete", key);
+        this.webSocketClient.send(payload);
+        return new Promise(resolve => {
+            this.webSocketClient.on("message", (result) => Message_1.default.callbackDelete(result, resolve));
         });
     }
     get host() {
