@@ -8,13 +8,14 @@
     "@types/ws": "^6.0.3",
     "dotenv": "^8.2.0",
     "level": "^6.0.0",
-    "nodemon": "^1.19.4",
-    "ts-node": "^8.4.1",
     "typescript": "^3.6.4",
-    "vpdate": "^0.1.1",
     "ws": "^7.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "vpdate": "^0.1.1",
+    "ts-node": "^8.4.1",
+    "nodemon": "^1.19.4"
+  },
   "scripts": {
     "dev-client": "nodemon --watch test test/client.ts",
     "dev-server": "nodemon --watch test test/server.ts",
