@@ -56,7 +56,7 @@ Shugart.start()
 
 Now that you successfully set up the server, you're able to use the client on any app you want. Below you can see the commands of **shugart**.
 
-#### shugart.client(host)
+#### shugart.connect(host)
 
 ```js
 // Connecting the client
