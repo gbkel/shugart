@@ -52,6 +52,7 @@ class Shugart {
 
 	setupWebSocketClient = (host: string) => {
 		this.websocketClient = new WebSocket(host)
+
 		return new Promise(resolve =>
 			this.websocketClient.on("open", () => {
 				this._host = host
